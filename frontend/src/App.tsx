@@ -1,12 +1,17 @@
-//import { useState } from 'react'
+//import PreRegister from "./PreRegister"
+//import RegisterForm from "./RegisterForm"
+//import Home from "./Home"
+import Carousel from "./Carousel"
+import Acordion from "./Acordion"
+import Marketing from "./Marketing"
 
-function App() {  
+function App() {
 
   return (
     <>
-      <div>
-        <h3>Home</h3>
-      </div>      
+      <Carousel />
+      <Acordion />
+      <Marketing />
     </>
   )
 }
