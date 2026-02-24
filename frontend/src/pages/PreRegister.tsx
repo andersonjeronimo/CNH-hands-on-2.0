@@ -1,4 +1,4 @@
-import Instrutores from "./assets/instrutores.png";
+import Instrutores from "../assets/instrutores.png";
 
 function PreRegister() {
     return (

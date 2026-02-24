@@ -2,7 +2,7 @@ function Acordion() {
 
     return (
 
-        <div className="container mt-lg-5 mb-lg-5">
+        <div className="container mt-lg-5 mb-lg-5">            
             <div className="accordion" id="accordionPanelsStayOpenExample">
                 <div className="accordion-item">
                     <h2 className="accordion-header">
@@ -58,7 +58,7 @@ function Acordion() {
                     </div>
                 </div>
             </div>
-
+            <hr className="featurette-divider" />
         </div>
 
 

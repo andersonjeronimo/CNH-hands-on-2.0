@@ -1,11 +1,11 @@
-import Check from "./assets/check.svg";
-import Chat from "./assets/chat.svg";
-import Car from "./assets/car.svg";
-import Logo from "./assets/logo.png";
-import Instrutores from "./assets/instrutores.png";
+import Check from "../../assets/check.svg";
+import Chat from "../../assets/chat.svg";
+import Car from "../../assets/car.svg";
+import Logo from "../../assets/logo.png";
+import Instrutores from "../../assets/instrutores.png";
 
 
-function Marketing() {
+function Feature() {
 
     return (
         <>
@@ -20,7 +20,7 @@ function Marketing() {
                             Você instrutor se cadastra inserindo nome, e-mail, contato whatsapp, Estado e Cidade que deseja ministrar suas aulas, categorias que ensina e se usa carro próprio ou carro do aluno.
                         </p>
                         <p>
-                            <a className="btn btn-success" href="#">Mais detalhes &raquo;</a>
+                            <a className="btn btn-success" href="/details">Mais detalhes &raquo;</a>
                         </p>
                     </div>
 
@@ -32,7 +32,7 @@ function Marketing() {
                             Com base nessas informações, o aluno filtra o profissional de acordo com a necessidade e realiza contato com aquele que escolher. A partir de então, a negociação quanto a valores e execução das aulas é com você, sem qualquer interferência da plataforma.
                         </p>
                         <p>
-                            <a className="btn btn-info" href="#">Mais detalhes &raquo;</a>
+                            <a className="btn btn-info" href="/details">Mais detalhes &raquo;</a>
                         </p>
                     </div>
 
@@ -44,7 +44,7 @@ function Marketing() {
                             Isso traz liberdade para o profissional, que não ficará engessado em agendas pré-definidas, além de permitir negociação dos valores e até criação de pacotes com mais aulas.
                         </p>
                         <p>
-                            <a className="btn btn-danger" href="#">Mais detalhes &raquo;</a>
+                            <a className="btn btn-danger" href="/details">Mais detalhes &raquo;</a>
                         </p>
                     </div>
 
@@ -110,4 +110,4 @@ function Marketing() {
     )
 
 }
-export default Marketing
+export default Feature

@@ -1,0 +1,10 @@
+function CustomersFilter() {
+    return (
+        <div className="container mt-lg-5">
+            <p className="text-center">Details Page</p> 
+        </div>
+    )
+
+}
+
+export default CustomersFilter;

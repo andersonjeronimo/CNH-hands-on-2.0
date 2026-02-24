@@ -1,5 +1,5 @@
 //import Logo from "./assets/logo.png";
-import Promo from "./assets/promocao.png";
+import Promo from "../../assets/promocao.png";
 
 function Carousel() {
     return (
@@ -23,7 +23,7 @@ function Carousel() {
                                     <a className="btn btn-lg btn-primary" href="#">Cadastro de Instrutor</a>
                                 </p> */}
                                 <div className="col-md-12">                                    
-                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/pre_cadastro" role="button">                                        
+                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/preregister" role="button">                                        
                                         Cadastrar como instrutor
                                     </a>
                                 </div>
@@ -42,7 +42,7 @@ function Carousel() {
                                     <a className="btn btn-lg btn-primary" href="#">Cadastro de Instrutor</a>
                                 </p> */}
                                 <div className="col-md-12">                                    
-                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/pre_cadastro" role="button">                                        
+                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/preregister" role="button">                                        
                                         Cadastrar como instrutor
                                     </a>
                                 </div>
@@ -61,7 +61,7 @@ function Carousel() {
                                     <a className="btn btn-lg btn-primary" href="#">Cadastro de Instrutor</a>
                                 </p> */}
                                 <div className="col-md-12">                                    
-                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/pre_cadastro" role="button">                                        
+                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/preregister" role="button">                                        
                                         Cadastrar como instrutor
                                     </a>
                                 </div>
@@ -77,7 +77,8 @@ function Carousel() {
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>
-            </div>
+            </div> 
+            <hr className="featurette-divider" />           
         </div>
     )
 }

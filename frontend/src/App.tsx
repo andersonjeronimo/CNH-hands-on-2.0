@@ -1,9 +1,6 @@
-//import PreRegister from "./PreRegister"
-//import RegisterForm from "./RegisterForm"
-//import Home from "./Home"
-import Carousel from "./Carousel"
-import Acordion from "./Acordion"
-import Marketing from "./Marketing"
+import Carousel from "./pages/partials/Carousel"
+import Acordion from "./pages/partials/Acordion"
+import Feature from "./pages/partials/Feature"
 
 function App() {
 
@@ -11,7 +8,7 @@ function App() {
     <>
       <Carousel />
       <Acordion />
-      <Marketing />
+      <Feature />
     </>
   )
 }
