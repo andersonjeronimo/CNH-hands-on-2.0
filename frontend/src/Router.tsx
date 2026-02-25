@@ -1,4 +1,5 @@
 import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
+import JSX from 'react';
 
 import App from './App';
 import PreRegister from './pages/PreRegister';
@@ -13,15 +14,36 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 
 function Router() {
+
+    type Props = {
+        children: JSX.ReactElement;
+    }
+
+    //implementar login
+    function PrivateRoute({ children }: Props) {
+        const isAuth = false;
+        return isAuth ? children : <Navigate to="/" />
+
+    }
+
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<App />}></Route>
-                <Route path='/preregister' element={<PreRegister />}></Route>
-                <Route path='/register' element={<RegisterForm />}></Route>
-                <Route path='/presearch' element={<PreSearch />}></Route>
-                <Route path='/search' element={<SearchForm />}></Route>
-                <Route path='/customers' element={<Customers />}></Route>
+                <Route path='/' element={<App />} />
+                <Route path='/home' element={<App />} />
+                <Route path='/preregister' element={<PreRegister />} />
+                <Route path='/register' element={<RegisterForm />} />
+                <Route path='/presearch' element={<PreSearch />} />
+                <Route path='/search' element={<SearchForm />} />
+                
+                {/* rota de listagem de instrutores deve ser privada */}
+                <Route path='/customers' element={
+                    <PrivateRoute>
+                        <Customers />
+                    </PrivateRoute>
+                } />
+                
                 <Route path='/customersfilter' element={<CustomersFilter />}></Route>
                 <Route path='/details' element={<Details />}></Route>
                 <Route path='/about' element={<About />}></Route>
@@ -34,5 +56,3 @@ function Router() {
 }
 
 export default Router;
-
-//https://cursos.luiztools.com.br/topico/04-react-router-dom/

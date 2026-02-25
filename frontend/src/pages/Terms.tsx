@@ -1,6 +1,6 @@
 function Terms() {
     return (
-        <div className="container mt-lg-5">
+        <div className="container mt-lg-5 mb-lg-5">
             <p className="text-center">Terms Page</p> 
         </div>
     )

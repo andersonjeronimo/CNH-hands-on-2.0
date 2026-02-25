@@ -1,9 +1,9 @@
 //import Logo from "./assets/logo.png";
-import Promo from "../../assets/promocao.png";
+import Promo from "../../assets/images/promocao.png";
 
 function Carousel() {
     return (
-        <div className="container mt-lg-5">
+        <div className="container mt-lg-5 mb-lg-5">
             <div id="carouselExampleIndicators" className="carousel slide mt-lg-5 mb-lg-5">
                 <div className="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>

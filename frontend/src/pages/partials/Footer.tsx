@@ -3,7 +3,7 @@ function Footer() {
 
         <>
             <div className="b-example-divider"></div>
-            <div className="container">
+            <div className="container mt-lg-5">
                 <footer className="py-5">
                     <div className="row">
                         <div className="col-6 col-md-2 mb-3">

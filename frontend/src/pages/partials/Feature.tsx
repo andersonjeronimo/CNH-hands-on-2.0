@@ -1,15 +1,15 @@
-import Check from "../../assets/check.svg";
-import Chat from "../../assets/chat.svg";
-import Car from "../../assets/car.svg";
-import Logo from "../../assets/logo.png";
-import Instrutores from "../../assets/instrutores.png";
+import Check from "../../assets/images/check.svg";
+import Chat from "../../assets/images/chat.svg";
+import Car from "../../assets/images/car.svg";
+import Logo from "../../assets/images/logo.png";
+import Instrutores from "../../assets/images/instrutores.png";
 
 
 function Feature() {
 
     return (
         <>
-            <div className="container marketing">
+            <div className="container mt-lg-5 mb-lg-5">
 
                 <div className="row">
                     <div className="col-lg-4">
