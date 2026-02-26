@@ -2,12 +2,12 @@ import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import JSX from 'react';
 
 import App from './App';
-import PreRegister from './pages/PreRegister';
+//import PreRegister from './pages/PreRegister';
+//import PreSearch from './pages/PreSearch';
 import RegisterForm from './pages/RegisterForm';
-import PreSearch from './pages/PreSearch';
 import SearchForm from './pages/SearchForm';
 import Customers from './pages/Customers';
-import CustomersFilter from './pages/CustomersFilter';
+import CustomerDetails from './pages/CustomerDetails';
 import Details from './pages/Details';
 import About from './pages/About';
 import Privacy from './pages/Privacy';
@@ -32,9 +32,9 @@ function Router() {
             <Routes>
                 <Route path='/' element={<App />} />
                 <Route path='/home' element={<App />} />
-                <Route path='/preregister' element={<PreRegister />} />
+                {/* <Route path='/preregister' element={<PreRegister />} /> */}
                 <Route path='/register' element={<RegisterForm />} />
-                <Route path='/presearch' element={<PreSearch />} />
+                {/* <Route path='/presearch' element={<PreSearch />} /> */}
                 <Route path='/search' element={<SearchForm />} />
                 
                 {/* rota de listagem de instrutores deve ser privada */}
@@ -44,7 +44,7 @@ function Router() {
                     </PrivateRoute>
                 } />
                 
-                <Route path='/customersfilter' element={<CustomersFilter />}></Route>
+                <Route path='/customersfilter' element={<CustomerDetails />}></Route>
                 <Route path='/details' element={<Details />}></Route>
                 <Route path='/about' element={<About />}></Route>
                 <Route path='/privacy' element={<Privacy />}></Route>

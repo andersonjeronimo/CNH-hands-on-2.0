@@ -1,9 +1,10 @@
 import Instrutores from "../assets/images/instrutores.png";
+import statesData from "../assets/utils/estados.json";
 
 function PreRegister() {
     return (
         <div className="container mt-lg-5 mb-lg-5">
-            <img src={Instrutores} className="d-block w-50 shadow" 
+            <img src={Instrutores} className="d-block w-50 shadow"
                 alt="Imagem com vários instrutores de trânsito" />
             <form action="/busca" method="GET" className="row g-3">
 
@@ -11,11 +12,11 @@ function PreRegister() {
                     <label className="form-label">Estado</label>
                     <select name="state" id="state" className="form-select" required>
                         <option selected disabled value="">Selecione o Estado</option>
-                        {/* <% uf.forEach(item=> { %>
-                            <option value="<%= item.id %>">
-                                <%= item.nome %>
+                        {statesData.map((option) => (
+                            <option /* key={option.id} */ value={option.nome}>
+                                {option.nome}
                             </option>
-                            <% }) %> */}
+                        ))}
                     </select>
                 </div>
 

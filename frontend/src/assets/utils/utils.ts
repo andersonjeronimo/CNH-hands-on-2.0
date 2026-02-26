@@ -1,4 +1,4 @@
-export enum Status {
+/* export enum Status {
     Ativo = "Ativo",
     Inativo = "Inativo",
     Pausado = "Pausado"
@@ -14,4 +14,4 @@ export enum Vehicle {
     Proprio = "Próprio",
     Aluno = "Terceiros",
     Ambos = "Próprio / Terceiros"
-}
+} */
