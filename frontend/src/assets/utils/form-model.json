@@ -1,0 +1,15 @@
+{
+    "firstname": "",
+    "lastname": "",
+    "email": "",
+    "ddd": "",
+    "phone": "",
+    "cpf": "",
+    "status": "Ativo",
+    "category": "A",
+    "vehicle": "Proprio",
+    "description": "",
+    "state": "",
+    "city": "",
+    "agree": false
+}

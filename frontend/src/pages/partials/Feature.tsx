@@ -103,8 +103,7 @@ function Feature() {
                         <img src={Logo} alt="" className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" height="500"
                             role="img" width="500" />
                     </div>
-                </div>
-                <hr className="featurette-divider" />
+                </div>                
             </div>
         </>
     )

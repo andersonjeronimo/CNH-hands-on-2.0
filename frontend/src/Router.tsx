@@ -2,8 +2,6 @@ import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import JSX from 'react';
 
 import App from './App';
-//import PreRegister from './pages/PreRegister';
-//import PreSearch from './pages/PreSearch';
 import RegisterForm from './pages/RegisterForm';
 import SearchForm from './pages/SearchForm';
 import Customers from './pages/Customers';
@@ -31,10 +29,8 @@ function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<App />} />
-                <Route path='/home' element={<App />} />
-                {/* <Route path='/preregister' element={<PreRegister />} /> */}
-                <Route path='/register' element={<RegisterForm />} />
-                {/* <Route path='/presearch' element={<PreSearch />} /> */}
+                <Route path='/home' element={<App />} />                
+                <Route path='/register' element={<RegisterForm />} />                
                 <Route path='/search' element={<SearchForm />} />
                 
                 {/* rota de listagem de instrutores deve ser privada */}

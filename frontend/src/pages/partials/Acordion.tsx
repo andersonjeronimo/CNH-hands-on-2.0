@@ -57,8 +57,7 @@ function Acordion() {
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr className="featurette-divider" />
+            </div>            
         </div>
 
 
