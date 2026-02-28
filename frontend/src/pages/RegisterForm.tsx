@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { cpf } from 'cpf-cnpj-validator';
 import axios from 'axios';
-
-import Terms from './Terms';
+//import Terms from './Terms';
 import TermsShort from './TermsShort';
 
 import Instrutores from '../assets/images/instrutores.png';
@@ -27,20 +26,14 @@ function RegisterForm() {
         danger: 'form-control focus-ring focus-ring-danger py-1 px-2 text-decoration-none border rounded-2'
     }
 
-
     const [message, setMessage] = useState('Cadastro de instrutores. Preencha os campos obrigatórios');
     const [alertClass, setAlertClass] = useState(messageClass.primary);
     const [inputClass, setInputClass] = useState(inputFocusClass.default);
-
     const [provinceData, setProvinceData] = useState([provinceModel]);
     const [selectedProvince, setSelectedProvince] = useState(provinceModel);
     const [citiesData, setCitiesData] = useState([cityModel]);//cidades por UF
     const [selectedCity, setSelectedCity] = useState(cityModel);
-    //https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/{microrregiao}/municipios
     const [microregionData, setMicroregionData] = useState([cityModel]);
-
-    //value={microregionData.map((city) => (city.nome))}
-
     const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);//cidades por microrregião
 
     useEffect(() => {
@@ -49,7 +42,7 @@ function RegisterForm() {
 
     const [formData, setFormData] = useState(formModel);
 
-    const handleInputChange = (e: any) => {
+    const handleInputChange = async (e: any) => {
         const { name, value, type, checked } = e.target;
         setFormData(prevState => ({
             ...prevState,
@@ -63,8 +56,13 @@ function RegisterForm() {
                 ['ddd']: ''
             }));
 
-            const province = provinceData.find(provinceModel => provinceModel.nome === value);
+            const province = provinceData.find(estado => estado.nome === value);
+            //setSelectedProvince(province || provinceModel);
             setSelectedProvince(province || provinceModel);
+            setFormData(prevState => ({
+                ...prevState,
+                ['stateId']: province?.id || 0
+            }));
 
             //buscar cidades na API do IBGE
             const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${province?.id}/municipios?orderBy=nome`;
@@ -75,16 +73,26 @@ function RegisterForm() {
                     } else {
                         setCitiesData([cityModel]);
                     }
-                })/* 
-                .catch(error => {
-                    setAlertClass(messageClass.danger);
-                    setMessage(error);
-                }) */;
+                });
+            /* 
+            .catch(error => {
+                setAlertClass(messageClass.danger);
+                setMessage(error);
+            }); */
         }
         //Cidade===============================================
         else if (name === 'city') {
             const city = citiesData.find(_city => _city.nome === value);
             setSelectedCity(city || cityModel);
+            setFormData(prevState => ({
+                ...prevState,
+                ['cityId']: city?.id || 0
+            }));
+
+            setFormData(prevState => ({
+                ...prevState,
+                ['microregionId']: city?.microrregiao.id || 0
+            }));
 
             setFormData(prevState => ({
                 ...prevState,
@@ -94,7 +102,7 @@ function RegisterForm() {
             setAlertClass(messageClass.info);
             setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 [Microrregião] deste formulário`);
 
-            //buscar cidades da microrregião na API do IBGE
+            //buscar cidades da microrregião na API do IBGE            
             //`https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/${city?.microrregiao.id}/municipios`
             const url = `https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/${city?.microrregiao.id}/municipios`;
             axios.get(url)
@@ -104,11 +112,12 @@ function RegisterForm() {
                     } else {
                         setMicroregionData([cityModel]);
                     }
-                })/* 
-                .catch(error => {
-                    setAlertClass(messageClass.danger);
-                    setMessage(error);
-                }) */;
+                });
+            /* 
+            .catch(error => {
+                setAlertClass(messageClass.danger);
+                setMessage(error);
+            }); */
 
         }
         //Termos e condições===================================
@@ -139,8 +148,9 @@ function RegisterForm() {
         }
     };
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
+        alert(formData.city);
 
         //Validar CPF
         let _cpf = formData.cpf;
@@ -155,13 +165,38 @@ function RegisterForm() {
         } else {
             //Prosseguir Cadastro de instrutores. Preencha os campos obrigatórios
             setInputClass(inputFocusClass.default);
-            setAlertClass(messageClass.success);
-            setMessage(`Cadastro do instrutor ${formData.firstname} realizado com sucesso!`);
+
+            try {
+                const response = await fetch('http://localhost:3000/api/customer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+                if (!response.ok) {
+                    // Handle non-successful responses (e.g., 400 Bad Request, 500 Server Error)
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json(); // Parse the JSON response from the API
+                console.log('Success:', result);
+                setAlertClass(messageClass.success);
+                setMessage(`Cadastro do instrutor ${formData.firstname} realizado com sucesso!`);
+                // Optional: Reset form fields
+                setFormData(formModel);
+                setSelectedProvince(provinceModel);
+                setSelectedCity(cityModel);
+                setProvinceData([provinceModel]);
+                setCitiesData([cityModel]);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during submission.');
+                // Implement more robust error handling for user feedback
+            }
         }
-
-        // You cannot directly write to a local JSON file from the client-side
-
-        // You would typically send this data to a server API
 
         // VERIFICAR, ANTES DE INSERIR, SE JÁ EXISTE O CPF
     };
@@ -169,13 +204,14 @@ function RegisterForm() {
     return (
         <>
             <div className='container mt-lg-5 mb-lg-5'>
-
-                <div className='row g-3 align-items-center'>
+                <p className="text-center"><h1>Cadastro de Instrutores</h1></p>
+                <hr />
+                {/* <div className='row g-3 align-items-center'>
                     <div className='col-md-12'>
                         <img src={Instrutores} className='rounded mx-auto img-fluid d-block shadow'
                             alt='Imagem com vários instrutores de trânsito' />
                     </div>
-                </div>
+                </div> */}
 
                 <form className="row g-3 needs-validation" onSubmit={handleSubmit}>
 
@@ -188,7 +224,7 @@ function RegisterForm() {
                         </div>
                         <div className='col-md-6'>
                             <label className='form-label'>1 - Estado</label>
-                            <select name='state' id='state' className='form-select' value={selectedProvince.nome} onChange={handleInputChange} required>
+                            <select name='state' id='state' className='form-select' value={formData.state} onChange={handleInputChange} required>
                                 <option selected disabled value={''}>Selecione o Estado</option>
                                 {provinceData.map((option) => (
                                     <option key={option.id} value={option.nome}>
@@ -200,7 +236,7 @@ function RegisterForm() {
 
                         <div className='col-md-6'>
                             <label className='form-label'>2 - Cidade</label>
-                            <select name='city' id='city' className='form-select' value={selectedCity.nome} onChange={handleInputChange} required>
+                            <select name='city' id='city' className='form-select' value={formData.city} onChange={handleInputChange} required>
                                 <option selected disabled value={''}>Selecione a cidade</option>
                                 {citiesData.map((option) => (
                                     <option key={option.id} value={option.nome}>
@@ -418,7 +454,7 @@ function RegisterForm() {
                                 <label className="form-check-label">
                                     Declaro que li e concordo com os <span>
                                         <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Termos de Uso da CNH Na Mão</a>
-                                    </span>, assumindo integral responsabilidade pelas informações prestadas e pelos serviços oferecidos.                                    
+                                    </span>, assumindo integral responsabilidade pelas informações prestadas e pelos serviços oferecidos.
 
                                     <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div className="modal-dialog">

@@ -1,4 +1,4 @@
-function CustomerDetails() {   
+function CustomerDetails() {
 
     /* enum Status {
         Ativo = "Ativo",
@@ -21,9 +21,8 @@ function CustomerDetails() {
     return (
         <div className="container mt-lg-5 mb-lg-5">
             <p className="text-center"><h1>Customer Details Page</h1></p>
-
-
-            <img src="/images/logo-glass-2.png" className="img-fluid" alt="CNH na mao logo com lupa" width="50%" />
+            <hr />
+            {/* <img src="/images/logo-glass-2.png" className="img-fluid" alt="CNH na mao logo com lupa" width="50%" /> */}
 
             <table className="table table-striped">
                 <thead>

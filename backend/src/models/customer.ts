@@ -10,9 +10,22 @@ export default class Customer {
     vehicle: string;
     description: string;
     state: string;
+    stateId: number;
     city: string;
+    cityId: number;
+    microregionId: number;
+    callByMicroregion: boolean;
+    agree: boolean;
 
-    constructor(firstname: string, lastname: string, email: string, ddd: string, phone: string, cpf: string, status: string, category: string, vehicle: string, description: string, state: string, city: string) {
+    constructor(firstname: string, lastname: string, email: string, ddd: string, phone: string, cpf: string, status: string, category: string, vehicle: string, description: string,
+        state: string,
+        stateId: number,
+        city: string,
+        cityId: number,
+        microregionId: number,
+        callByMicroregion: boolean,
+        agree: boolean
+    ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -24,6 +37,11 @@ export default class Customer {
         this.vehicle = vehicle;
         this.description = description;
         this.state = state;
+        this.stateId = stateId;
         this.city = city;
+        this.cityId = cityId;
+        this.microregionId = microregionId;
+        this.callByMicroregion = callByMicroregion;
+        this.agree = agree;
     }
 }

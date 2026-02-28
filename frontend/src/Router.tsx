@@ -10,6 +10,7 @@ import Details from './pages/Details';
 import About from './pages/About';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import Faq from './pages/Faq';
 
 function Router() {
 
@@ -45,6 +46,7 @@ function Router() {
                 <Route path='/about' element={<About />}></Route>
                 <Route path='/privacy' element={<Privacy />}></Route>
                 <Route path='/terms' element={<Terms />}></Route>
+                <Route path='/faq' element={<Faq />}></Route>
             </Routes>
         </BrowserRouter>
     )

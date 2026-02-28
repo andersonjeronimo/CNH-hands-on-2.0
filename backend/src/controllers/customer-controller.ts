@@ -42,7 +42,7 @@ async function findCustomersFilter(req: Request, res: Response, next: NextFuncti
 }
 
 async function insertCustomer(req: Request, res: Response, next: NextFunction) {
-    let customer = req.body as Customer;
+    const customer = req.body as Customer;
     const insertedId = await customerRepository.insertCustomer(customer);
     res.status(200).json(insertedId);
 }

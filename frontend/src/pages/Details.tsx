@@ -1,7 +1,8 @@
 function Details() {
     return (
         <div className="container mt-lg-5 mb-lg-5">
-            <p className="text-center">Details Page</p>
+            <p className="text-center"><h1>Details Page</h1></p>
+            <hr />
         </div>
     )
 
