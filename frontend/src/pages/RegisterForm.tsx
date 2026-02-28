@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { cpf } from 'cpf-cnpj-validator';
 import axios from 'axios';
 
+import Terms from './Terms';
+import TermsShort from './TermsShort';
+
 import Instrutores from '../assets/images/instrutores.png';
 import Estados from '../assets/utils/estados.json';
 import provinceModel from '../assets/utils/estado-model.json';
@@ -11,8 +14,6 @@ import formModel from '../assets/utils/form-model.json';
 
 function RegisterForm() {
 
-    //https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/{microrregiao}/municipios       
-
     const messageClass = {
         primary: 'alert alert-primary',
         success: 'alert alert-success',
@@ -20,14 +21,27 @@ function RegisterForm() {
         warning: 'alert alert-warning',
         info: 'alert alert-info'
     }
+
+    const inputFocusClass = {
+        default: 'form-control',
+        danger: 'form-control focus-ring focus-ring-danger py-1 px-2 text-decoration-none border rounded-2'
+    }
+
+
     const [message, setMessage] = useState('Cadastro de instrutores. Preencha os campos obrigatórios');
     const [alertClass, setAlertClass] = useState(messageClass.primary);
+    const [inputClass, setInputClass] = useState(inputFocusClass.default);
+
     const [provinceData, setProvinceData] = useState([provinceModel]);
     const [selectedProvince, setSelectedProvince] = useState(provinceModel);
-    const [citiesData, setCitiesData] = useState([cityModel]);
+    const [citiesData, setCitiesData] = useState([cityModel]);//cidades por UF
     const [selectedCity, setSelectedCity] = useState(cityModel);
+    //https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/{microrregiao}/municipios
+    const [microregionData, setMicroregionData] = useState([cityModel]);
 
-    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);
+    //value={microregionData.map((city) => (city.nome))}
+
+    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);//cidades por microrregião
 
     useEffect(() => {
         setProvinceData(Estados);
@@ -55,28 +69,71 @@ function RegisterForm() {
             //buscar cidades na API do IBGE
             const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${province?.id}/municipios?orderBy=nome`;
             axios.get(url)
-                .then(response => setCitiesData(response.data))
+                .then(response => {
+                    if (response.data) {
+                        setCitiesData(response.data)
+                    } else {
+                        setCitiesData([cityModel]);
+                    }
+                })/* 
                 .catch(error => {
                     setAlertClass(messageClass.danger);
                     setMessage(error);
-                });
+                }) */;
         }
         //Cidade===============================================
         else if (name === 'city') {
             const city = citiesData.find(_city => _city.nome === value);
             setSelectedCity(city || cityModel);
 
+            setFormData(prevState => ({
+                ...prevState,
+                ['callByMicroregion']: false
+            }));
+
+            setAlertClass(messageClass.info);
+            setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 [Microrregião] deste formulário`);
+
+            //buscar cidades da microrregião na API do IBGE
+            //`https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/${city?.microrregiao.id}/municipios`
+            const url = `https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/${city?.microrregiao.id}/municipios`;
+            axios.get(url)
+                .then(response => {
+                    if (response.data) {
+                        setMicroregionData(response.data)
+                    } else {
+                        setMicroregionData([cityModel]);
+                    }
+                })/* 
+                .catch(error => {
+                    setAlertClass(messageClass.danger);
+                    setMessage(error);
+                }) */;
+
         }
         //Termos e condições===================================
-        else if (type === 'checkbox') {            
-            if (checked) {
-                setAlertClass(messageClass.info);
-                setMessage(`Concordo com os termos e condições`);
-                setSubmitBtnDisabled(false);
-            } else {
-                setAlertClass(messageClass.danger);
-                setMessage(`NÃO concordo com os termos e condições`);
-                setSubmitBtnDisabled(true);
+        else if (type === 'checkbox') {
+            if (name === 'agree') {
+                if (checked) {
+                    setAlertClass(messageClass.info);
+                    setMessage(`Li e concordo com os termos e condições`);
+                    setSubmitBtnDisabled(false);
+                } else {
+                    setAlertClass(messageClass.danger);
+                    setMessage(`Para efetuar o cadastro, é necessário concordar com os termos e condições`);
+                    setSubmitBtnDisabled(true);
+                }
+            }
+            if (name === 'callByMicroregion') {
+                if (checked) {
+                    setAlertClass(messageClass.info);
+                    setMessage(`
+                        Microrregião de ${selectedCity.nome} : ${microregionData.map((city) => (` ${city.nome}`))}
+                        `);
+                } else {
+                    setAlertClass(messageClass.info);
+                    setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 [Microrregião] deste formulário`);
+                }
             }
 
         }
@@ -88,14 +145,16 @@ function RegisterForm() {
         //Validar CPF
         let _cpf = formData.cpf;
         if (!cpf.isValid(_cpf)) {
+            setInputClass(inputFocusClass.danger);
             setAlertClass(messageClass.danger);
-            setMessage(`O CPF informado, ${cpf.format(formData.cpf)}, é inválido!`);
+            setMessage(`Atenção: O CPF informado, ${formData.cpf}, é inválido`);
             setFormData(prevState => ({
                 ...prevState,
                 ['cpf']: ''
             }));
         } else {
             //Prosseguir Cadastro de instrutores. Preencha os campos obrigatórios
+            setInputClass(inputFocusClass.default);
             setAlertClass(messageClass.success);
             setMessage(`Cadastro do instrutor ${formData.firstname} realizado com sucesso!`);
         }
@@ -111,10 +170,14 @@ function RegisterForm() {
         <>
             <div className='container mt-lg-5 mb-lg-5'>
 
-                <img src={Instrutores} className='rounded mx-auto img-fluid d-block shadow'
-                    alt='Imagem com vários instrutores de trânsito' />
+                <div className='row g-3 align-items-center'>
+                    <div className='col-md-12'>
+                        <img src={Instrutores} className='rounded mx-auto img-fluid d-block shadow'
+                            alt='Imagem com vários instrutores de trânsito' />
+                    </div>
+                </div>
 
-                <form onSubmit={handleSubmit} className='row g-3'>
+                <form className="row g-3 needs-validation" onSubmit={handleSubmit}>
 
                     <div className='row g-3 align-items-center'>
 
@@ -124,7 +187,7 @@ function RegisterForm() {
                             </div>
                         </div>
                         <div className='col-md-6'>
-                            <label className='form-label'>Estado</label>
+                            <label className='form-label'>1 - Estado</label>
                             <select name='state' id='state' className='form-select' value={selectedProvince.nome} onChange={handleInputChange} required>
                                 <option selected disabled value={''}>Selecione o Estado</option>
                                 {provinceData.map((option) => (
@@ -136,7 +199,7 @@ function RegisterForm() {
                         </div>
 
                         <div className='col-md-6'>
-                            <label className='form-label'>Cidade</label>
+                            <label className='form-label'>2 - Cidade</label>
                             <select name='city' id='city' className='form-select' value={selectedCity.nome} onChange={handleInputChange} required>
                                 <option selected disabled value={''}>Selecione a cidade</option>
                                 {citiesData.map((option) => (
@@ -147,18 +210,34 @@ function RegisterForm() {
                             </select>
                         </div>
 
+                        <div className='col-md-12'>
+                            <label className='form-label'>3 - Microrregião</label>
+                            <div className="form-check">
+                                <input className="form-check-input"
+                                    type="checkbox"
+                                    name="callByMicroregion"
+                                    id="callByMicroregion"
+                                    checked={formData.callByMicroregion}
+                                    onChange={handleInputChange}
+                                    required />
+                                <label className="form-check-label">
+                                    Receber solicitações de alunos da microrregião de {selectedCity.nome} ?
+                                </label>
+                            </div>
+                        </div>
+
                         <div className='col-md-6'>
-                            <label className='form-label'>Nome</label>
+                            <label className='form-label'>4 - Nome</label>
                             <input type='text' className='form-control' name='firstname' id='firstname'
                                 value={formData.firstname} onChange={handleInputChange} required />
                         </div>
                         <div className='col-md-6'>
-                            <label className='form-label'>Sobrenome</label>
+                            <label className='form-label'>5 - Sobrenome</label>
                             <input type='text' className='form-control' name='lastname' id='lastname'
                                 value={formData.lastname} onChange={handleInputChange} required />
                         </div>
                         <div className='col-md-6'>
-                            <label className='form-label'>Email</label>
+                            <label className='form-label'>6 - Email</label>
                             <div className='input-group'>
                                 <span className='input-group-text' id='email'>@</span>
                                 <input type='email' className='form-control' name='email' id='email'
@@ -169,7 +248,7 @@ function RegisterForm() {
 
 
                         <div className='col-md-1'>
-                            <label className='form-label'>DDD</label>
+                            <label className='form-label'>7 - DDD</label>
                             <select name='ddd' id='ddd' className='form-select' value={formData.ddd} onChange={handleInputChange} required>
                                 <option selected value={'00'}>00</option>
                                 {selectedProvince.ddd.map((ddd) => (
@@ -181,31 +260,31 @@ function RegisterForm() {
                         </div>
 
                         <div className='col-md-5'>
-                            <label className='form-label'>Celular</label>
+                            <label className='form-label'>8 - Celular | Whatsapp</label>
                             <input type='number' className='form-control' name='phone' id='phone' min='900000000' max='999999999'
                                 value={formData.phone} onChange={handleInputChange}
                                 placeholder='Apenas números, sem DDD, pontos ou traços. Ex.: 982827878' required />
                         </div>
 
                         <div className='col-md-6'>
-                            <label className='form-label'>CPF</label>
-                            <input type='number' className='form-control' name='cpf' id='cpf' min='1000000000' max='99999999999'
+                            <label className='form-label'>9 - CPF</label>
+                            <input type='text' className={inputClass} name='cpf' id='cpf'
                                 value={formData.cpf} onChange={handleInputChange}
                                 placeholder='Apenas números, sem pontos ou traços. Ex.: 23456756789'
                                 required />
                         </div>
 
-                        <div className='col-md-6'>
-                            <label className='form-label'>Descrição do veículo (opcional)</label>
+                        <div className='col-md-12'>
+                            <label className='form-label'>10 -Descrição do veículo (opcional)</label>
                             <textarea className='form-control' name='description' id='description'
-                                value={formData.description} onChange={handleInputChange}
-                                placeholder='Informe tipo de câmbio, modelo, etc.'></textarea>
+                                value={formData.description} onChange={handleInputChange} rows={3}
+                                placeholder='Se for veículo próprio, você pode colocar aqui a marca, modelo, tipo de câmbio, etc. Isso pode ajudar na escolha do instrutor'></textarea>
                         </div>
 
                         <hr />
 
                         <div className='col-md-4'>
-                            <label className='form-label'>Status</label>
+                            <label className='form-label'>11 - Status</label>
                             <div className='form-check'>
                                 <input className='form-check-input'
                                     type='radio'
@@ -225,7 +304,7 @@ function RegisterForm() {
                                     value='Pausado'
                                     checked={formData.status === 'Pausado'}
                                     onChange={handleInputChange}
-                                    id='status' />
+                                    id='status' disabled />
                                 <label className='form-check-label'>
                                     Pausado
                                 </label>
@@ -237,7 +316,7 @@ function RegisterForm() {
                                     value='Inativo'
                                     checked={formData.status === 'Inativo'}
                                     onChange={handleInputChange}
-                                    id='status' />
+                                    id='status' disabled />
                                 <label className='form-check-label'>
                                     Inativo
                                 </label>
@@ -245,7 +324,7 @@ function RegisterForm() {
                         </div>
 
                         <div className='col-md-4'>
-                            <label className='form-label'>Categoria</label>
+                            <label className='form-label'>12 - Categoria</label>
                             <div className='form-check'>
                                 <input className='form-check-input'
                                     type='radio'
@@ -285,7 +364,7 @@ function RegisterForm() {
                         </div>
 
                         <div className='col-md-4'>
-                            <label className='form-label'>Veículo</label>
+                            <label className='form-label'>13 - Veículo</label>
                             <div className='form-check'>
                                 <input className='form-check-input'
                                     type='radio'
@@ -327,6 +406,7 @@ function RegisterForm() {
                         <hr />
 
                         <div className='col-md-12'>
+                            <label className='form-label'>14 - Termos e Condições Gerais de uso</label>
                             <div className="form-check">
                                 <input className="form-check-input"
                                     type="checkbox"
@@ -336,7 +416,44 @@ function RegisterForm() {
                                     onChange={handleInputChange}
                                     required />
                                 <label className="form-check-label">
-                                    Li e concordo com os termos e condições
+                                    Declaro que li e concordo com os <span>
+                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Termos de Uso da CNH Na Mão</a>
+                                    </span>, assumindo integral responsabilidade pelas informações prestadas e pelos serviços oferecidos.                                    
+
+                                    <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={-1} aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div className="modal-dialog">
+                                            <div className="modal-content">
+                                                <div className="modal-header">
+                                                    <h1 className="modal-title fs-5" id="staticBackdropLabel">TERMOS E CONDIÇÕES GERAIS DE USO</h1>
+                                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div className="modal-body">
+
+                                                    <TermsShort></TermsShort>
+
+                                                </div>
+                                                <div className="modal-footer">
+
+                                                    <div className="form-check">
+                                                        <input className="form-check-input"
+                                                            type="checkbox"
+                                                            name="agree"
+                                                            id="agree"
+                                                            checked={formData.agree}
+                                                            onChange={handleInputChange}
+                                                            required />
+                                                        <label className="form-check-label">
+                                                            Li e concordo com os termos
+                                                        </label>
+                                                    </div>
+
+                                                    <hr />
+
+                                                    <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </label>
                             </div>
                         </div>
