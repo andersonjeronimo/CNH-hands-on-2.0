@@ -6,6 +6,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 
 //Webhook Mercado Pago
 import { Status } from "../utils/utils";
+import Pagination from '../models/pagination';
 
 //https://www.mongodb.com/pt-br/docs/drivers/node/current/crud/insert/
 
@@ -38,8 +39,14 @@ async function run() {
 run().catch(console.dir);
 //Teste de conexão++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+//db.collection.find(<query>, <projection>, <options>)
+//db.collection.find({ attribute: "some value" })
+//db.collection.find({ year: { $gte: 2000 } })
+//db.collection.find({ attribute: "some value", year: { $gte: 2000 } })
+//db.collection.find({ total: { $gte: 100, $lte: 500 } })
+
 async function findCustomer(query: {}) {
-    let document;    
+    let document;
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -50,15 +57,15 @@ async function findCustomer(query: {}) {
     try {
         const database = client.db(dbName);
         const collection = database.collection(collectionName);
-        document = await collection.findOne({});
+        document = await collection.findOne(query);
     } finally {
         await client.close();
     }
     return document;
 }
 
-async function findCustomers(query: {}) {
-    let documents;    
+async function findCustomers(query: {}, pagination: Pagination) {
+    let documents;
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -69,7 +76,11 @@ async function findCustomers(query: {}) {
     try {
         const database = client.db(dbName);
         const collection = database.collection(collectionName);
-        documents = await collection.find(query).toArray();
+        documents = await collection.find(query)
+            .skip((pagination.pageNumber - 1) * pagination.pageSize)
+            .limit(pagination.limit)
+            .toArray();
+            
     } finally {
         await client.close();
     }
@@ -77,7 +88,7 @@ async function findCustomers(query: {}) {
 }
 
 async function insertCustomer(doc: Customer) {
-    let document;    
+    let document;
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -120,7 +131,7 @@ async function updateCustomerStatus(cpf: string, event: string) {
             break;
     }
 
-    let document;    
+    let document;
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,
