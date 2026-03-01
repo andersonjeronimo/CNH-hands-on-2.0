@@ -1,22 +1,4 @@
-function CustomerDetails() {
-
-    /* enum Status {
-        Ativo = "Ativo",
-        Inativo = "Inativo",
-        Pausado = "Pausado"
-    }
-
-    enum Category {
-        A = "A",
-        B = "B",
-        AB = "A e B"
-    }
-
-    enum Vehicle {
-        Proprio = "Próprio",
-        Aluno = "Terceiros",
-        Ambos = "Próprio / Terceiros"
-    } */
+function CustomerDetails() { 
 
     return (
         <div className="container mt-lg-5 mb-lg-5">

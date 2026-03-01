@@ -23,8 +23,8 @@ function Carousel() {
                                     <a className="btn btn-lg btn-primary" href="#">Cadastro de Instrutor</a>
                                 </p> */}
                                 <div className="col-md-12">                                    
-                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/preregister" role="button">                                        
-                                        Cadastrar como instrutor
+                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/register" role="button">                                        
+                                        Cadastre-se como instrutor!
                                     </a>
                                 </div>
                             </div>
@@ -42,8 +42,8 @@ function Carousel() {
                                     <a className="btn btn-lg btn-primary" href="#">Cadastro de Instrutor</a>
                                 </p> */}
                                 <div className="col-md-12">                                    
-                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/preregister" role="button">                                        
-                                        Cadastrar como instrutor
+                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/register" role="button">                                        
+                                        Cadastre-se como instrutor!
                                     </a>
                                 </div>
                             </div>
@@ -61,8 +61,8 @@ function Carousel() {
                                     <a className="btn btn-lg btn-primary" href="#">Cadastro de Instrutor</a>
                                 </p> */}
                                 <div className="col-md-12">                                    
-                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/preregister" role="button">                                        
-                                        Cadastrar como instrutor
+                                    <a className="btn btn-primary form-control btn-lg shadow-lg" href="/register" role="button">                                        
+                                        Cadastre-se como instrutor!
                                     </a>
                                 </div>
                             </div>

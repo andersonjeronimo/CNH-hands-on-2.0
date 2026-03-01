@@ -35,9 +35,11 @@ async function findCustomersFilter(req: Request, res: Response, next: NextFuncti
     const filter = {
         category: req.body.category,
         vehicle: req.body.vehicle,
+        state: req.body.state,
         city: req.body.city
     }
     const customers = await customerRepository.findCustomers(filter);
+    console.log(customers);
     res.status(200).json(customers);
 }
 

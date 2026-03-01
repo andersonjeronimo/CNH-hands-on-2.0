@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import { cpf } from 'cpf-cnpj-validator';
 import axios from 'axios';
-//import Terms from './Terms';
 import TermsShort from './TermsShort';
 
-import Instrutores from '../assets/images/instrutores.png';
 import Estados from '../assets/utils/estados.json';
 import provinceModel from '../assets/utils/estado-model.json';
 import cityModel from '../assets/utils/cidade-model.json';
-//import microRegionModel from '../assets/utils/microrregiao-model.json';
 import formModel from '../assets/utils/form-model.json';
 
 function RegisterForm() {
@@ -57,7 +54,6 @@ function RegisterForm() {
             }));
 
             const province = provinceData.find(estado => estado.nome === value);
-            //setSelectedProvince(province || provinceModel);
             setSelectedProvince(province || provinceModel);
             setFormData(prevState => ({
                 ...prevState,
@@ -100,7 +96,7 @@ function RegisterForm() {
             }));
 
             setAlertClass(messageClass.info);
-            setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 [Microrregião] deste formulário`);
+            setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 (Microrregião) deste formulário`);
 
             //buscar cidades da microrregião na API do IBGE            
             //`https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes/${city?.microrregiao.id}/municipios`
@@ -124,7 +120,7 @@ function RegisterForm() {
         else if (type === 'checkbox') {
             if (name === 'agree') {
                 if (checked) {
-                    setAlertClass(messageClass.info);
+                    setAlertClass(messageClass.warning);
                     setMessage(`Li e concordo com os termos e condições`);
                     setSubmitBtnDisabled(false);
                 } else {
@@ -141,7 +137,7 @@ function RegisterForm() {
                         `);
                 } else {
                     setAlertClass(messageClass.info);
-                    setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 [Microrregião] deste formulário`);
+                    setMessage(`Receber solicitações de cidades vizinhas? Selecione no campo 3 (Microrregião) deste formulário`);
                 }
             }
 
@@ -150,7 +146,6 @@ function RegisterForm() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        alert(formData.city);
 
         //Validar CPF
         let _cpf = formData.cpf;
@@ -166,36 +161,27 @@ function RegisterForm() {
             //Prosseguir Cadastro de instrutores. Preencha os campos obrigatórios
             setInputClass(inputFocusClass.default);
 
-            try {
-                const response = await fetch('http://localhost:3000/api/customer', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (!response.ok) {
-                    // Handle non-successful responses (e.g., 400 Bad Request, 500 Server Error)
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            axios.post('http://localhost:3000/api/customer', formData).then(response => {
+                if (!response.data) {
+                    console.log(response.data)
+                } else {
+                    setAlertClass(messageClass.success);
+                    setMessage(`Cadastro do instrutor ${formData.firstname} realizado com sucesso!`);
+                    
+                    // Optional: Reset form fields
+                    setFormData(formModel);
+                    setSelectedProvince(provinceModel);
+                    setSelectedCity(cityModel);
+                    setProvinceData([provinceModel]);
+                    setCitiesData([cityModel]);
                 }
+            });
 
-                const result = await response.json(); // Parse the JSON response from the API
-                console.log('Success:', result);
-                setAlertClass(messageClass.success);
-                setMessage(`Cadastro do instrutor ${formData.firstname} realizado com sucesso!`);
-                // Optional: Reset form fields
-                setFormData(formModel);
-                setSelectedProvince(provinceModel);
-                setSelectedCity(cityModel);
-                setProvinceData([provinceModel]);
-                setCitiesData([cityModel]);
-
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred during submission.');
-                // Implement more robust error handling for user feedback
-            }
+            /* 
+            .catch(error => {
+                setAlertClass(messageClass.danger);
+                setMessage(error);
+            }); */
         }
 
         // VERIFICAR, ANTES DE INSERIR, SE JÁ EXISTE O CPF
@@ -255,7 +241,7 @@ function RegisterForm() {
                                     id="callByMicroregion"
                                     checked={formData.callByMicroregion}
                                     onChange={handleInputChange}
-                                    required />
+                                />
                                 <label className="form-check-label">
                                     Receber solicitações de alunos da microrregião de {selectedCity.nome} ?
                                 </label>
