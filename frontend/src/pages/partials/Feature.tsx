@@ -57,8 +57,8 @@ function Feature() {
                 <div className="row featurette">
                     <div className="col-md-7">
                         <h2 className="featurette-heading fw-normal lh-1">
-                            Cadastre-se como instrutor:
-                            {/* <span className="text-body-secondary"> Ganhe visibilidade.</span> */}
+                            Cadastre-se como instrutor.
+                            <span className="text-body-secondary"> Ganhe visibilidade:</span>
                         </h2>
                         <p className="lead">
                             Você instrutor se cadastra inserindo nome, e-mail, contato whatsapp, Estado e Cidade que deseja ministrar suas aulas,

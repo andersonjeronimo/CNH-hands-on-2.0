@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cpf } from 'cpf-cnpj-validator';
 import axios from 'axios';
 import TermsShort from './TermsShort';
@@ -6,9 +7,11 @@ import TermsShort from './TermsShort';
 import Estados from '../assets/utils/estados.json';
 import provinceModel from '../assets/utils/estado-model.json';
 import cityModel from '../assets/utils/cidade-model.json';
-import formModel from '../assets/utils/form-model.json';
+import customerModel from '../assets/utils/customer-model.json';
 
 function RegisterForm() {
+
+    const navigate = useNavigate();
 
     const messageClass = {
         primary: 'alert alert-primary',
@@ -37,7 +40,7 @@ function RegisterForm() {
         setProvinceData(Estados);
     }, []);
 
-    const [formData, setFormData] = useState(formModel);
+    const [formData, setFormData] = useState(customerModel);
 
     const handleInputChange = async (e: any) => {
         const { name, value, type, checked } = e.target;
@@ -163,17 +166,11 @@ function RegisterForm() {
 
             axios.post('http://localhost:3000/api/customer', formData).then(response => {
                 if (!response.data) {
-                    console.log(response.data)
+                    console.log(response.data);
+                    //setmessage(ERRO!)
                 } else {
-                    setAlertClass(messageClass.success);
-                    setMessage(`Cadastro do instrutor ${formData.firstname} realizado com sucesso!`);
-                    
-                    // Optional: Reset form fields
-                    setFormData(formModel);
-                    setSelectedProvince(provinceModel);
-                    setSelectedCity(cityModel);
-                    setProvinceData([provinceModel]);
-                    setCitiesData([cityModel]);
+                    navigate('/register-result');
+                    //Passar ID e carregar o cliente na tela de resultado
                 }
             });
 
@@ -446,7 +443,7 @@ function RegisterForm() {
                                         <div className="modal-dialog">
                                             <div className="modal-content">
                                                 <div className="modal-header">
-                                                    <h1 className="modal-title fs-5" id="staticBackdropLabel">TERMOS E CONDIÇÕES GERAIS DE USO</h1>
+                                                    <h1 className="modal-title fs-5" id="staticBackdropLabel">Termos e Condições Gerais de Uso</h1>
                                                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div className="modal-body">

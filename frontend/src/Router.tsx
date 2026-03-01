@@ -3,7 +3,9 @@ import JSX from 'react';
 
 import App from './App';
 import RegisterForm from './pages/RegisterForm';
+import RegisterResult from './pages/RegisterResult';
 import SearchForm from './pages/SearchForm';
+import SearchResult from './pages/SearchResult';
 import Customers from './pages/Customers';
 import CustomerDetails from './pages/CustomerDetails';
 import Details from './pages/Details';
@@ -31,8 +33,10 @@ function Router() {
             <Routes>
                 <Route path='/' element={<App />} />
                 <Route path='/home' element={<App />} />                
-                <Route path='/register' element={<RegisterForm />} />                
+                <Route path='/register' element={<RegisterForm />} />
+                <Route path='/register-result' element={<RegisterResult />} />
                 <Route path='/search' element={<SearchForm />} />
+                <Route path='/search-result' element={<SearchResult />} />
                 
                 {/* rota de listagem de instrutores deve ser privada */}
                 <Route path='/customers' element={

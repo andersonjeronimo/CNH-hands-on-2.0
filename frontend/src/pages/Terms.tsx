@@ -2,6 +2,7 @@ function Terms() {
     return (
         <div className="container mt-lg-5 mb-lg-5">
             <p className="text-center"><h1>Termos e Condições Gerais de Uso</h1></p>
+            <p className="text-center"><h3>CNH Na Mão</h3></p>
             <hr />
             <p className="fw-normal text-start">
                 CNH NA MÃO é uma prestadora de serviços de anúncios online realizados entre promitentes contratantes (“Alunos”) e promitentes anunciantes de serviços ('Instrutores'), por meio do aplicativo (em breve) e do site CNH na Mão ('Plataforma').
