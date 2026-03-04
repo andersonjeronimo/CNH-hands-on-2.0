@@ -1,12 +1,10 @@
-import Carousel from "./pages/partials/Carousel"
-import Feature from "./pages/partials/Feature"
+import LandPage from "./pages/LandPage"
 
 function App() {
 
   return (
     <>
-      <Carousel />      
-      <Feature />
+      <LandPage></LandPage>
     </>
   )
 }

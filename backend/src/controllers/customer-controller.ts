@@ -4,7 +4,7 @@ dotenv.config();
 import { Request, Response, NextFunction } from 'express';
 import customerRepository from '../repositories/customer-repository';
 import Customer from '../models/customer';
-import Pagination from 'src/models/pagination';
+//import Pagination from 'src/models/pagination';
 
 /*Webhook*/
 async function updateCustomerStatus(req: Request, res: Response, next: NextFunction) {
@@ -14,36 +14,29 @@ async function updateCustomerStatus(req: Request, res: Response, next: NextFunct
     res.status(200).json(result);
 }
 
-async function findCustomer(req: Request, res: Response, next: NextFunction) {
-    const id = req.params.id;
-    const customer = await customerRepository.findCustomer({ _id: id });
+async function findCustomerById(req: Request, res: Response, next: NextFunction) {
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const customer = await customerRepository.findCustomerById(id);
     res.status(200).json(customer);
 }
+
+async function findCustomer(req: Request, res: Response, next: NextFunction) {
+    const query = req.body;
+    const customer = await customerRepository.findCustomer(query);
+    res.status(200).json(customer);
+}
+
 async function findCustomers(req: Request, res: Response, next: NextFunction) {
     const query = req.body.query;
-    const pagination = req.body.pagination as Pagination;
-    /*{    
-        "category": "A",
-        "vehicle": "Proprio",    
-        "state": "",
-        "stateId": 0,
-        "city": "",
-        "cityId": 0,
-        "microregionId": 0,
-        "callByMicroregion":false,
-        "agree": false
-    }*/
-    if (query.callByMicroregion) {
-        const { category, vehicle, stateId, microregionId, callByMicroregion } = query;
-        const _query = { category, vehicle, stateId, microregionId, callByMicroregion };
-        const customers = await customerRepository.findCustomers(_query, pagination);
-        res.status(200).json(customers);
-    } else {
-        const { category, vehicle, stateId, cityId } = query;
-        const _query = { category, vehicle, stateId, cityId };
-        const customers = await customerRepository.findCustomers(_query, pagination);
-        res.status(200).json(customers);
-    }
+    console.log(req.body);
+    //const pagination = req.body.pagination as Pagination; 
+    const { pageNumber, pageSize } = req.body.pagination;
+    const skip = ((pageNumber - 1) * pageSize);
+    //const limit = pagination.limit;
+
+    const { category, vehicle, stateId, microregionId, callByMicroregion, cityId } = query;
+    const customers = await customerRepository.findCustomers(category, vehicle, stateId, cityId, microregionId, callByMicroregion, skip, pageSize);
+    res.status(200).json(customers);
 
 }
 
@@ -53,4 +46,4 @@ async function insertCustomer(req: Request, res: Response, next: NextFunction) {
     res.status(200).json(insertedId);
 }
 
-export default { insertCustomer, updateCustomerStatus, findCustomer, findCustomers }
+export default { insertCustomer, updateCustomerStatus, findCustomerById, findCustomer, findCustomers }

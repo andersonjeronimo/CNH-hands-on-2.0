@@ -1,5 +1,4 @@
-//import Logo from "./assets/logo.png";
-import Promo from "../../assets/images/promocao.png";
+import Logo from "../../assets/images/logo.png";
 
 function Carousel() {
     return (
@@ -12,7 +11,7 @@ function Carousel() {
                 </div>
                 <div className="carousel-inner">
                     <div className="carousel-item active">
-                        <img src={Promo} className="d-block w-100 shadow" alt="Imagem com vários instrutores de trânsito" />
+                        <img src={Logo} className="w-50 " alt="Logotipo do CNH Na Mão" />
                         <div className="container">
                             <div className="carousel-caption text-start">
                                 {/* <h1>Cadastre-se</h1> */}
@@ -31,7 +30,7 @@ function Carousel() {
                         </div>
                     </div>
                     <div className="carousel-item active">
-                        <img src={Promo} className="d-block w-100 shadow" alt="Imagem com vários instrutores de trânsito" />
+                        <img src={Logo} className="w-50" alt="Logotipo do CNH Na Mão" />
                         <div className="container">
                             <div className="carousel-caption text-start">
                                 {/* <h1>Cadastre-se</h1> */}
@@ -50,7 +49,7 @@ function Carousel() {
                         </div>
                     </div>
                     <div className="carousel-item active">
-                        <img src={Promo} className="d-block w-100 shadow" alt="Imagem com vários instrutores de trânsito" />
+                        <img src={Logo} className="w-50" alt="Logotipo do CNH Na Mão" />
                         <div className="container">
                             <div className="carousel-caption text-start">
                                 {/* <h1>Cadastre-se</h1> */}

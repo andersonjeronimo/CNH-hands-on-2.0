@@ -26,7 +26,7 @@ function RegisterForm() {
         danger: 'form-control focus-ring focus-ring-danger py-1 px-2 text-decoration-none border rounded-2'
     }
 
-    const [message, setMessage] = useState('Cadastro de instrutores. Preencha os campos obrigatórios');
+    const [message, setMessage] = useState('Preencha os campos abaixo');
     const [alertClass, setAlertClass] = useState(messageClass.primary);
     const [inputClass, setInputClass] = useState(inputFocusClass.default);
     const [provinceData, setProvinceData] = useState([provinceModel]);
@@ -72,12 +72,7 @@ function RegisterForm() {
                     } else {
                         setCitiesData([cityModel]);
                     }
-                });
-            /* 
-            .catch(error => {
-                setAlertClass(messageClass.danger);
-                setMessage(error);
-            }); */
+                }).catch((error) => console.log(error));
         }
         //Cidade===============================================
         else if (name === 'city') {
@@ -111,12 +106,7 @@ function RegisterForm() {
                     } else {
                         setMicroregionData([cityModel]);
                     }
-                });
-            /* 
-            .catch(error => {
-                setAlertClass(messageClass.danger);
-                setMessage(error);
-            }); */
+                }).catch((error) => console.log(error));
 
         }
         //Termos e condições===================================
@@ -164,21 +154,13 @@ function RegisterForm() {
             //Prosseguir Cadastro de instrutores. Preencha os campos obrigatórios
             setInputClass(inputFocusClass.default);
 
-            axios.post('http://localhost:3000/api/customer', formData).then(response => {
-                if (!response.data) {
-                    console.log(response.data);
-                    //setmessage(ERRO!)
-                } else {
-                    navigate('/register-result');
+            axios.post('http://localhost:3000/api/customer', formData)
+                .then((response) => {
+                    const id = response.data;
+                    navigate(`/register-result/${id}`);
                     //Passar ID e carregar o cliente na tela de resultado
-                }
-            });
-
-            /* 
-            .catch(error => {
-                setAlertClass(messageClass.danger);
-                setMessage(error);
-            }); */
+                })
+                .catch((error) => console.log(error));
         }
 
         // VERIFICAR, ANTES DE INSERIR, SE JÁ EXISTE O CPF
@@ -202,7 +184,9 @@ function RegisterForm() {
 
                         <div className='col-md-12'>
                             <div className={alertClass} role='alert'>
-                                {message}
+                                <p className="fs-5">
+                                    <strong>{message}</strong>
+                                </p>
                             </div>
                         </div>
                         <div className='col-md-6'>
@@ -393,7 +377,7 @@ function RegisterForm() {
                                     onChange={handleInputChange}
                                     id='vehicle' />
                                 <label className='form-check-label'>
-                                    Veículo próprio
+                                    Veículo PRÓPRIO
                                 </label>
                             </div>
                             <div className='form-check'>
@@ -405,7 +389,7 @@ function RegisterForm() {
                                     onChange={handleInputChange}
                                     id='vehicle' />
                                 <label className='form-check-label'>
-                                    Veículo do aluno
+                                    Veículo do ALUNO
                                 </label>
                             </div>
                             <div className='form-check'>
@@ -417,7 +401,7 @@ function RegisterForm() {
                                     onChange={handleInputChange}
                                     id='vehicle' />
                                 <label className='form-check-label'>
-                                    Veículo próprio ou do aluno (a combinar)
+                                    Veículo PRÓPRIO ou do ALUNO (a combinar)
                                 </label>
                             </div>
                         </div>

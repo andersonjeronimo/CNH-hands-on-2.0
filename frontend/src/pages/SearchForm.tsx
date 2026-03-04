@@ -23,7 +23,7 @@ function SearchForm() {
 
     const [tableData, setTableData] = useState([customerModel]);
 
-    const [message, setMessage] = useState('Busca de instrutores. Localize um instrutor conforme os critérios de busca');
+    const [message, setMessage] = useState('Localize o(s) instrutor(es) preenchendo os campos abaixo');
     const [alertClass, setAlertClass] = useState(messageClass.success);
     const [provinceData, setProvinceData] = useState([provinceModel]);
     const [citiesData, setCitiesData] = useState([cityModel]);//cidades por UF
@@ -61,12 +61,7 @@ function SearchForm() {
                     } else {
                         setCitiesData([cityModel]);
                     }
-                });
-            /* 
-            .catch(error => {
-                setAlertClass(messageClass.danger);
-                setMessage(error);
-            }); */
+                }).catch((error) => console.log(error));
         }
         //Cidade===============================================
         else if (name === 'city') {
@@ -100,12 +95,8 @@ function SearchForm() {
                     } else {
                         setMicroregionData([cityModel]);
                     }
-                });
-            /* 
-            .catch(error => {
-                setAlertClass(messageClass.danger);
-                setMessage(error);
-            }); */
+                })
+                .catch((error) => console.log(error));
 
         }
         //Termos e condições===================================
@@ -142,8 +133,7 @@ function SearchForm() {
         const payload = {
             pagination: {
                 pageNumber: 1,
-                pageSize: 2,
-                limit: 2
+                pageSize: 10
             },
             query: formData
         }
@@ -159,7 +149,7 @@ function SearchForm() {
     return (
         <>
             <div className='container mt-lg-5 mb-lg-5'>
-                <p className="text-center"><h1>Busca de Instrutores</h1></p>
+                <p className="text-center"><h1>Busca por Instrutores</h1></p>
                 <hr />
                 {/* <div className='row g-3 align-items-center'>
                     <div className='col-md-12'>
@@ -174,7 +164,9 @@ function SearchForm() {
 
                         <div className='col-md-12'>
                             <div className={alertClass} role='alert'>
-                                {message}
+                                <p className="fs-5">
+                                    <strong>{message}</strong>
+                                </p>
                             </div>
                         </div>
                         <div className='col-md-6'>
@@ -270,7 +262,7 @@ function SearchForm() {
                                     onChange={handleInputChange}
                                     id='vehicle' />
                                 <label className='form-check-label'>
-                                    Veículo próprio
+                                    Veículo do INSTRUTOR
                                 </label>
                             </div>
                             <div className='form-check'>
@@ -282,7 +274,7 @@ function SearchForm() {
                                     onChange={handleInputChange}
                                     id='vehicle' />
                                 <label className='form-check-label'>
-                                    Veículo do aluno
+                                    Veículo do ALUNO
                                 </label>
                             </div>
                             <div className='form-check'>
@@ -294,7 +286,7 @@ function SearchForm() {
                                     onChange={handleInputChange}
                                     id='vehicle' />
                                 <label className='form-check-label'>
-                                    Veículo próprio ou do aluno (a combinar)
+                                    Veículo do INSTRUTOR / do ALUNO (a combinar)
                                 </label>
                             </div>
                         </div>
@@ -367,6 +359,7 @@ function SearchForm() {
                     <thead>
                         <tr>
                             <th scope="col">Nome</th>
+                            <th scope="col">Cidade</th>
                             <th scope="col">Telefone</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">Veículo</th>
@@ -380,8 +373,11 @@ function SearchForm() {
                                 <th scope="row">
                                     {customer.firstname}
                                 </th>
+                                <th scope="row">
+                                    {customer.city}
+                                </th>
                                 <td>
-                                    {customer.phone}
+                                    +55 ({customer.ddd}) {customer.phone}
                                 </td>
                                 <td>
                                     {customer.category}
@@ -404,6 +400,20 @@ function SearchForm() {
                         ))}
                     </tbody>
                 </table>
+                        
+                <nav aria-label="Page navigation example">
+                    <ul className="pagination justify-content-center">
+                        <li className="page-item disabled">
+                            <a className="btn btn-success">Anterior</a>
+                        </li>
+                        <li className="page-item"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item">
+                            <a className="btn btn-primary" href="#">Próxima</a>
+                        </li>
+                    </ul>
+                </nav>
 
 
 

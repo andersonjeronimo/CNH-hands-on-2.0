@@ -13,42 +13,45 @@ function Feature() {
 
                 <div className="row">
                     <div className="col-lg-4">
-                        <img src={Check} alt="" className="bd-placeholder-img rounded-circle" height="140"
-                            role="img" width="140" />
-                        <h2 className="fw-normal">Cadastre-se como instrutor</h2>
-                        <hr />
-                        <p>
+                        <img src={Check} alt="" className="mx-auto d-block rounded-circle" role="img" width={140} height={140} />
+                        <p className="text-center">
+                            <h2 className="fw-normal">Cadastre-se como instrutor</h2>
+                        </p>                        
+                        <p className="text-center">
                             Você instrutor se cadastra inserindo nome, e-mail, contato whatsapp, Estado e Cidade que deseja ministrar suas aulas, categorias que ensina e se usa carro próprio ou carro do aluno.
                         </p>
-                        <p>
+                        <p className="text-center">
                             <a className="btn btn-success shadow" href="/details">Mais detalhes &raquo;</a>
                         </p>
+                        <hr />
                     </div>
 
                     <div className="col-lg-4">
-                        <img src={Chat} alt="" className="bd-placeholder-img rounded-circle" height="140"
-                            role="img" width="140" />
-                        <h2 className="fw-normal">Receba solicitações</h2>
-                        <hr />
-                        <p>
+                        <img src={Chat} alt="" className="mx-auto d-block rounded-circle" role="img" width={140} height={140} />
+                        <p className="text-center">
+                            <h2 className="fw-normal">Receba solicitações</h2>
+                        </p>                        
+                        <p className="text-center">
                             Com base nessas informações, o aluno filtra o profissional de acordo com a necessidade e realiza contato com aquele que escolher. A partir de então, a negociação quanto a valores e execução das aulas é com você, sem qualquer interferência da plataforma.
                         </p>
-                        <p>
+                        <p className="text-center">
                             <a className="btn btn-info shadow" href="/details">Mais detalhes &raquo;</a>
                         </p>
+                        <hr />
                     </div>
 
                     <div className="col-lg-4">
-                        <img src={Car} alt="" className="bd-placeholder-img rounded-circle" height="140"
-                            role="img" width="140" />
-                        <h2 className="fw-normal">Marque e inicie as aulas</h2>
-                        <hr />
-                        <p>
+                        <img src={Car} alt="" className="mx-auto d-block rounded-circle" role="img" width={140} height={140} />
+                        <p className="text-center">
+                            <h2 className="fw-normal">Marque e inicie as aulas</h2>
+                        </p>                        
+                        <p className="text-center">
                             Isso traz liberdade para o profissional, que não ficará engessado em agendas pré-definidas, além de permitir negociação dos valores e até criação de pacotes com mais aulas.
                         </p>
-                        <p>
+                        <p className="text-center">
                             <a className="btn btn-danger shadow" href="/details">Mais detalhes &raquo;</a>
                         </p>
+                        <hr />
                     </div>
 
                 </div>
@@ -91,8 +94,7 @@ function Feature() {
                 <div className="row featurette">
                     <div className="col-md-7">
                         <h2 className="featurette-heading fw-normal lh-1">
-                            Marque e inicie as aulas:
-                            {/* <span className="text-body-secondary">Checkmate.</span> */}
+                            Marque e inicie as aulas:                            
                         </h2>
                         <p className="lead">
                             Isso traz liberdade para o profissional, que não ficará engessado em agendas pré-definidas,

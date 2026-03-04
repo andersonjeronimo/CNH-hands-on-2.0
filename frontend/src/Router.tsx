@@ -2,6 +2,7 @@ import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import JSX from 'react';
 
 import App from './App';
+import LoginPage from './pages/Login';
 import RegisterForm from './pages/RegisterForm';
 import RegisterResult from './pages/RegisterResult';
 import SearchForm from './pages/SearchForm';
@@ -13,6 +14,7 @@ import About from './pages/About';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import Faq from './pages/Faq';
+import Construction from './pages/partials/Construction';
 
 function Router() {
 
@@ -32,7 +34,9 @@ function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<App />} />
-                <Route path='/home' element={<App />} />                
+                <Route path='/home' element={<App />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route path='/construction' element={<Construction />} />
                 <Route path='/register' element={<RegisterForm />} />
                 <Route path='/register-result' element={<RegisterResult />} />
                 <Route path='/search' element={<SearchForm />} />

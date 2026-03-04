@@ -1,19 +1,15 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import Customer from '../models/customer';
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { Document, Filter, MongoClient, ServerApiVersion } from "mongodb";
+import { ObjectId } from 'mongodb';
 
 //Webhook Mercado Pago
 import { Status } from "../utils/utils";
-import Pagination from '../models/pagination';
-
-//https://www.mongodb.com/pt-br/docs/drivers/node/current/crud/insert/
 
 const uri = `${process.env.URI}`;
 const dbName = `${process.env.DATABASE_NAME}`;
 const collectionName = `${process.env.COLLECTION_NAME}`;
-
 
 //Teste de conexão++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -39,11 +35,26 @@ async function run() {
 run().catch(console.dir);
 //Teste de conexão++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-//db.collection.find(<query>, <projection>, <options>)
-//db.collection.find({ attribute: "some value" })
-//db.collection.find({ year: { $gte: 2000 } })
-//db.collection.find({ attribute: "some value", year: { $gte: 2000 } })
-//db.collection.find({ total: { $gte: 100, $lte: 500 } })
+//https://www.mongodb.com/pt-br/docs/drivers/node/current/crud/insert/
+
+async function findCustomerById(id: string) {
+    let document;
+    const client = new MongoClient(uri, {
+        serverApi: {
+            version: ServerApiVersion.v1,
+            strict: true,
+            deprecationErrors: true,
+        }
+    });
+    try {
+        const database = client.db(dbName);
+        const collection = database.collection(collectionName);
+        document = await collection.findOne({ _id: new ObjectId(id) });
+    } finally {
+        await client.close();
+    }
+    return document;
+}
 
 async function findCustomer(query: {}) {
     let document;
@@ -64,8 +75,19 @@ async function findCustomer(query: {}) {
     return document;
 }
 
-async function findCustomers(query: {}, pagination: Pagination) {
+async function findCustomers(category: string, vehicle: string, stateId: number, cityId: number, microregionId: number,
+    callByMicroregion: boolean, skip: number, limit: number) {
     let documents;
+    let query;
+    if (callByMicroregion) {
+        query = {
+            category, vehicle, stateId, microregionId,
+            $or: [{ callByMicroregion: { $eq: true } }, { cityId: { $eq: cityId } }]
+        };
+    } else {
+        query = { category, vehicle, stateId, cityId };
+    }
+
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -77,18 +99,17 @@ async function findCustomers(query: {}, pagination: Pagination) {
         const database = client.db(dbName);
         const collection = database.collection(collectionName);
         documents = await collection.find(query)
-            .skip((pagination.pageNumber - 1) * pagination.pageSize)
-            .limit(pagination.limit)
+            .skip(skip)
+            .limit(limit)
             .toArray();
-            
     } finally {
         await client.close();
     }
     return documents;
 }
 
-async function insertCustomer(doc: Customer) {
-    let document;
+async function insertCustomer(document: {}) {
+    let result;
     const client = new MongoClient(uri, {
         serverApi: {
             version: ServerApiVersion.v1,
@@ -99,11 +120,11 @@ async function insertCustomer(doc: Customer) {
     try {
         const database = client.db(dbName);
         const customers = database.collection(collectionName);
-        document = await customers.insertOne(doc);
+        result = await customers.insertOne(document);
     } finally {
         await client.close();
     }
-    return document.insertedId;
+    return result.insertedId;
 }
 
 //Webhook Mercado Pago+++++++++++++++++++++++++++++++++++++++++++++
@@ -166,6 +187,7 @@ async function updateCustomerStatus(cpf: string, event: string) {
 //Webhook Mercado Pago+++++++++++++++++++++++++++++++++++++++++++++
 
 export default {
+    findCustomerById,
     findCustomer,
     findCustomers,
     insertCustomer,
