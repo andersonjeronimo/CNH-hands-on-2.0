@@ -94,7 +94,7 @@ function Feature() {
                 <div className="row featurette">
                     <div className="col-md-7">
                         <h2 className="featurette-heading fw-normal lh-1">
-                            Marque e inicie as aulas:                            
+                            Marque e inicie as aulas:
                         </h2>
                         <p className="lead">
                             Isso traz liberdade para o profissional, que não ficará engessado em agendas pré-definidas,

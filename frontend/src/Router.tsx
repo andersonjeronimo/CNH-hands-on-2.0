@@ -29,7 +29,6 @@ function Router() {
 
     }
 
-
     return (
         <BrowserRouter>
             <Routes>
