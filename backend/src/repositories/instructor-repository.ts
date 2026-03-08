@@ -37,7 +37,7 @@ run().catch(console.dir);
 
 //https://www.mongodb.com/pt-br/docs/drivers/node/current/crud/insert/
 
-async function findCustomerById(id: string) {
+async function findInstructorById(id: string) {
     let document;
     const client = new MongoClient(uri, {
         serverApi: {
@@ -56,7 +56,45 @@ async function findCustomerById(id: string) {
     return document;
 }
 
-async function findCustomer(query: {}) {
+async function findInstructorByCPF(_cpf: string) {
+    let document;
+    const client = new MongoClient(uri, {
+        serverApi: {
+            version: ServerApiVersion.v1,
+            strict: true,
+            deprecationErrors: true,
+        }
+    });
+    try {
+        const database = client.db(dbName);
+        const collection = database.collection(collectionName);
+        document = await collection.findOne({ cpf: { $eq: _cpf } });
+    } finally {
+        await client.close();
+    }
+    return document;
+}
+
+async function findInstructorByCNPJ(_cnpj: string) {
+    let document;
+    const client = new MongoClient(uri, {
+        serverApi: {
+            version: ServerApiVersion.v1,
+            strict: true,
+            deprecationErrors: true,
+        }
+    });
+    try {
+        const database = client.db(dbName);
+        const collection = database.collection(collectionName);
+        document = await collection.findOne({ cnpj: { $eq: _cnpj } });
+    } finally {
+        await client.close();
+    }
+    return document;
+}
+
+async function findInstructor(query: {}) {
     let document;
     const client = new MongoClient(uri, {
         serverApi: {
@@ -75,7 +113,7 @@ async function findCustomer(query: {}) {
     return document;
 }
 
-async function findCustomers(category: string, vehicle: string, stateId: number, cityId: number, microregionId: number,
+async function findInstructors(category: string, vehicle: string, stateId: number, cityId: number, microregionId: number,
     callByMicroregion: boolean, skip: number, limit: number) {
     let documents;
     let query;
@@ -108,7 +146,7 @@ async function findCustomers(category: string, vehicle: string, stateId: number,
     return documents;
 }
 
-async function insertCustomer(document: {}) {
+async function insertInstructor(document: {}) {
     let result;
     const client = new MongoClient(uri, {
         serverApi: {
@@ -128,7 +166,7 @@ async function insertCustomer(document: {}) {
 }
 
 //Webhook Mercado Pago+++++++++++++++++++++++++++++++++++++++++++++
-async function updateCustomerStatus(cpf: string, event: string) {
+async function updateInstructorStatus(cpf: string, event: string) {
     /* Eventos:
     ✅ subscription_created
     ✅ payment_succeeded
@@ -187,9 +225,11 @@ async function updateCustomerStatus(cpf: string, event: string) {
 //Webhook Mercado Pago+++++++++++++++++++++++++++++++++++++++++++++
 
 export default {
-    findCustomerById,
-    findCustomer,
-    findCustomers,
-    insertCustomer,
-    updateCustomerStatus
+    findInstructorById,
+    findInstructorByCPF,
+    findInstructorByCNPJ,
+    findInstructor,
+    findInstructors,
+    insertInstructor,
+    updateInstructorStatus
 }

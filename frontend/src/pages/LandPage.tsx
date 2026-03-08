@@ -1,11 +1,12 @@
 import Logo from "./partials/Logo";
-import LoginPage from "./Login";
+import Jumbotron from "./partials/Jumbotron";
+//import Feature from "./partials/Feature";
 
 function LandPage() {
     return (
         <>
-            <Logo></Logo>
-            <LoginPage></LoginPage>
+            <Logo></Logo>                        
+            <Jumbotron></Jumbotron>
         </>
     )
 }

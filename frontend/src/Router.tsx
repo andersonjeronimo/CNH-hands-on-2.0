@@ -7,13 +7,16 @@ import RegisterForm from './pages/RegisterForm';
 import RegisterResult from './pages/RegisterResult';
 import SearchForm from './pages/SearchForm';
 import SearchResult from './pages/SearchResult';
-import Customers from './pages/Customers';
-import CustomerDetails from './pages/CustomerDetails';
+import Customers from './pages/Instructors';
+import CustomerDetails from './pages/InstructorDetails';
 import Details from './pages/Details';
 import About from './pages/About';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
-import Faq from './pages/Faq';
+import FaqCustomers from './pages/FaqCustomers';
+import FaqInstructors from './pages/FaqInstructors';
+
+
 import Construction from './pages/partials/Construction';
 
 function Router() {
@@ -53,7 +56,9 @@ function Router() {
                 <Route path='/about' element={<About />}></Route>
                 <Route path='/privacy' element={<Privacy />}></Route>
                 <Route path='/terms' element={<Terms />}></Route>
-                <Route path='/faq' element={<Faq />}></Route>
+                <Route path='/faq-customers' element={<FaqCustomers />}></Route>
+                <Route path='/faq-instructors' element={<FaqInstructors />}></Route>
+                
             </Routes>
         </BrowserRouter>
     )

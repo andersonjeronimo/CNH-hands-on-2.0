@@ -1,14 +1,77 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import customerModel from '../assets/utils/customer-model.json';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+
+import instructorModel from '../assets/utils/instructor-model.json';
+import paginationModel from '../assets/utils/pagination.json';
 
 function SerchResult() {
 
-    const [tableData, setTableData] = useState([customerModel]);
+    const location = useLocation();
+    const [tableData, setTableData] = useState([instructorModel]);
+    const [queryData, setQueryData] = useState({});
+    const [paginationData, setPaginationData] = useState(paginationModel);
 
     useEffect(() => {
-        setTableData([customerModel]);
+        setTableData(location.state.data);
+        setQueryData(location.state.query);
+
+        paginationData.pageNumber = 1;
+        paginationData.pageSize = Number(import.meta.env.VITE_PAGE_SIZE);
+
     }, []);
+
+    const handlePagination = async (e: any) => {
+        //e.preventDefault();
+        const { name } = e.target;
+
+        if (name === 'nextPage') {
+            if (tableData.length > 0) {
+
+                if (tableData.length === paginationData.pageSize) {
+                    paginationData.pageNumber++;
+                }
+
+                const payload = {
+                    pagination: paginationData,
+                    query: queryData
+                }
+                axios
+                    .post(import.meta.env.VITE_INSTRUCTOR_SEARCH_API_URL, payload)
+                    .then((response) => {
+                        if (response.data) {
+                            if (typeof response.data === 'object' && Object.keys(response.data).length > 0) {
+                                setTableData(response.data);
+                            }
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            }
+
+        }
+        if (name === 'previousPage') {
+            if (paginationData.pageNumber > 1) {
+                paginationData.pageNumber--;
+
+                const payload = {
+                    pagination: paginationData,
+                    query: queryData
+                }
+
+                axios
+                    .post(import.meta.env.VITE_INSTRUCTOR_SEARCH_API_URL, payload)
+                    .then((response) => {
+                        if (response.data) {
+                            if (typeof response.data === 'object' && Object.keys(response.data).length > 0) {
+                                setTableData(response.data);
+                            }
+                        }
+                    })
+                    .catch((error) => console.log(error));
+            }
+        }
+
+    };
 
 
     return (
@@ -17,10 +80,27 @@ function SerchResult() {
             <p className="text-center"><h3>Conforme critérios da busca</h3></p>
             <hr />
 
+            <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center">
+                    <li className="page-item">
+                        <button className='btn btn-success shadow' name='previousPage' id='previousPage' onClick={handlePagination}>
+                            Página Anterior
+                        </button>
+                    </li>
+                    <li className="page-item"><a className="page-link" href="#">Página {paginationData.pageNumber}</a></li>
+                    <li className="page-item">
+                        <button className='btn btn-primary shadow' name='nextPage' id='nextPage' onClick={handlePagination}>
+                            Próxima Página
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
             <table className="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Nome</th>
+                        <th scope="col">Cidade</th>
                         <th scope="col">Telefone</th>
                         <th scope="col">Categoria</th>
                         <th scope="col">Veículo</th>
@@ -28,24 +108,27 @@ function SerchResult() {
                     </tr>
                 </thead>
                 <tbody>
-                    {tableData.map((customer) => (
+                    {tableData.map((instructor) => (
 
                         <tr>
                             <th scope="row">
-                                {customer.firstname}
+                                {instructor.firstname}
+                            </th>
+                            <th scope="row">
+                                {instructor.city}
                             </th>
                             <td>
-                                {customer.phone}
+                                +55 ({instructor.ddd}) {instructor.phone}
                             </td>
                             <td>
-                                {customer.category}
+                                {instructor.category}
                             </td>
                             <td>
-                                {customer.vehicle}
+                                {instructor.vehicle}
                             </td>
                             <td>
                                 <a className="btn btn-success shadow form-control"
-                                    href={`https://wa.me/55${customer.ddd}${customer.phone}?text=Olá!%20Te%20encontrei%20pelo%20aplicativo%20CNH%20Na%20Mão.%20Gostaria%20de%20agendar%20aulas%20de%20direção.%20Aguardo%20seu%20contato!`}
+                                    href={`https://wa.me/55${instructor.ddd}${instructor.phone}?text=Olá!%20Te%20encontrei%20pelo%20aplicativo%20CNH%20Na%20Mão.%20Gostaria%20de%20agendar%20aulas%20de%20direção.%20Aguardo%20seu%20contato!`}
                                     role="button" target="_blank" >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         className="bi bi-whatsapp" viewBox="0 0 16 16">
@@ -58,6 +141,22 @@ function SerchResult() {
                     ))}
                 </tbody>
             </table>
+
+            <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center">
+                    <li className="page-item">
+                        <button className='btn btn-success shadow' name='previousPage' id='previousPage' onClick={handlePagination}>
+                            Página Anterior
+                        </button>
+                    </li>
+                    <li className="page-item"><a className="page-link" href="#">Página {paginationData.pageNumber}</a></li>
+                    <li className="page-item">
+                        <button className='btn btn-primary shadow' name='nextPage' id='nextPage' onClick={handlePagination}>
+                            Próxima Página
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
     )
 

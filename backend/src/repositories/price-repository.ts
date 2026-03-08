@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 
 const uri = `${process.env.URI}`;
 const dbName = `${process.env.DATABASE_NAME}`;
-const collectionName = `${process.env.COLLECTION_NAME}`;
+const collectionName = 'prices';//`${process.env.COLLECTION_NAME}`;
 
 //Teste de conexão++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -34,7 +34,7 @@ async function run() {
 
 //https://www.mongodb.com/pt-br/docs/drivers/node/current/crud/insert/
 
-async function auth(username: string, password: string) {
+async function findPrice() {
     let document;
     const client = new MongoClient(uri, {
         serverApi: {
@@ -46,11 +46,30 @@ async function auth(username: string, password: string) {
     try {
         const database = client.db(dbName);
         const collection = database.collection(collectionName);
-        document = await collection.findOne({ _id: new ObjectId(password) });
+        document = await collection.findOne({});
     } finally {
         await client.close();
     }
     return document;
 }
 
-export default { auth }
+async function setPrice(document: {}) {
+    let result;
+    const client = new MongoClient(uri, {
+        serverApi: {
+            version: ServerApiVersion.v1,
+            strict: true,
+            deprecationErrors: true,
+        }
+    });
+    try {
+        const database = client.db(dbName);
+        const price = database.collection(collectionName);
+        result = await price.insertOne(document);
+    } finally {
+        await client.close();
+    }
+    return result.insertedId;
+}
+
+export default { findPrice, setPrice }

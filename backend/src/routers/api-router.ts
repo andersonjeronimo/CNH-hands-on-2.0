@@ -1,17 +1,22 @@
 import express from "express";
-import customerController from '../controllers/customer-controller';
+import instructorController from '../controllers/instructor-controller';
 import authController from '../controllers/auth-controller';
+import priceController from '../controllers/price-controller';
 
 const router = express.Router();
 
+/*price*/
+router.get('/price', priceController.getPrice);
+router.post('/price', priceController.setPrice);
 /*Webhooks*/
-router.post('/webhook/:event', customerController.updateCustomerStatus);
+router.post('/webhook/:event', instructorController.updateInstructorStatus);
 /*login*/
 router.post('/auth', authController.doLogin);
-/*customers*/
-router.post('/customer', customerController.insertCustomer);
-router.get('/customer/:id', customerController.findCustomerById);
-router.post('/customer/', customerController.findCustomer);
-router.post('/customers', customerController.findCustomers);
+/*instructors*/
+router.post('/instructor', instructorController.insertInstructor);
+router.get('/instructor/:id', instructorController.findInstructorById);
+router.get('/instructor/by-cpf/:cpf', instructorController.findInstructorByCPF);
+router.get('/instructor/by-cnpj/:cnpj', instructorController.findInstructorByCNPJ);
+router.post('/instructor/search', instructorController.findInstructors);
 
 export default router;

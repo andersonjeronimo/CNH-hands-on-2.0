@@ -1,10 +1,11 @@
-export default class Customer {
+export default class Instructor {
     firstname: string;
     lastname: string;
     email: string;
     ddd: string;
     phone: string;
     cpf: string;
+    cnpj: string;
     status: string;
     category: string;
     vehicle: string;
@@ -17,7 +18,7 @@ export default class Customer {
     callByMicroregion: boolean;
     agree: boolean;
 
-    constructor(firstname: string, lastname: string, email: string, ddd: string, phone: string, cpf: string, status: string, category: string, vehicle: string, description: string,
+    constructor(firstname: string, lastname: string, email: string, ddd: string, phone: string, cpf: string, cnpj:string, status: string, category: string, vehicle: string, description: string,
         state: string,
         stateId: number,
         city: string,
@@ -32,6 +33,7 @@ export default class Customer {
         this.ddd = ddd;
         this.phone = phone;
         this.cpf = cpf;
+        this.cnpj = cnpj;
         this.status = status;
         this.category = category;
         this.vehicle = vehicle;

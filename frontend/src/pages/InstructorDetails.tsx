@@ -1,8 +1,8 @@
-function CustomerDetails() { 
+function InstructorDetails() { 
 
     return (
         <div className="container mt-lg-5 mb-lg-5">
-            <p className="text-center"><h1>Customer Details Page</h1></p>
+            <p className="text-center"><h1>Instructor Details Page</h1></p>
             <hr />
             {/* <img src="/images/logo-glass-2.png" className="img-fluid" alt="CNH na mao logo com lupa" width="50%" /> */}
 
@@ -55,4 +55,4 @@ function CustomerDetails() {
 
 }
 
-export default CustomerDetails;
+export default InstructorDetails;

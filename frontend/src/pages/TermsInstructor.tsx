@@ -1,4 +1,4 @@
-function TermsShort() {
+function TermsInstructor() {
     return (
         <div className="container">
             <p className="fw-normal text-start">
@@ -77,4 +77,4 @@ function TermsShort() {
 
 }
 
-export default TermsShort;
+export default TermsInstructor;
