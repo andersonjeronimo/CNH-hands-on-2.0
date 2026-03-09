@@ -267,9 +267,7 @@ function FAQAlunos() {
                             <strong>Não. </strong>
                             Apesar da regulamentação ser de aplicação nacional e o objetivo ser o mesmo,
                             cada Estado tem seu Detran e pode ter procedimentos específicos e diferentes entre si para alcançar o mesmo resultado.
-                            Recomendamos consultar o site do
-                            <a href="https://www.gov.br/prf/pt-br/servicos-old/multas/nada-consta/lista-de-sites-detrans" target="_blank"> Detran de seu Estado </a>
-                            para maiores informações.
+                            Recomendamos consultar o site do <a href="https://www.gov.br/prf/pt-br/servicos-old/multas/nada-consta/lista-de-sites-detrans" target="_blank">Detran de seu Estado</a> para maiores informações.
                         </div>
                     </div>
                 </div>

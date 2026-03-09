@@ -120,9 +120,7 @@ function SearchForm() {
             if (name === 'callByMicroregion') {
                 if (checked) {
                     setAlertClass(messageClass.info);
-                    setMessage(`
-                        Microrregião de ${selectedCity.nome} : ${microregionData.map((city) => (` ${city.nome}`))}
-                        `);
+                    setMessage(`Microrregião de ${selectedCity.nome} : ${microregionData.map((city) => (` ${city.nome}`))}`);
                 } else {
                     setAlertClass(messageClass.info);
                     setMessage(`Localizar instrutores de cidades vizinhas? Selecione no campo 3 (Microrregião) deste formulário`);
@@ -148,13 +146,18 @@ function SearchForm() {
             .then((response) => {
                 if (response.data) {
                     if (typeof response.data === 'object' && Object.keys(response.data).length > 0) {
-                        navigate('/search-result', { state: { data: response.data, query: formData } });                        
+                        navigate('/search-result', { state: { data: response.data, query: formData } });
+                    } else if (Array.isArray(response.data) && response.data.length > 0) {
+                        navigate('/search-result', { state: { data: response.data, query: formData } });
+                    }
+                    else {
+                        setAlertClass(messageClass.warning);
+                        setMessage(`Não localizamos nenhum instrutor com os critérios selecionados.`);
                     }
                 }
                 else {
                     setAlertClass(messageClass.warning);
                     setMessage(`Não localizamos nenhum instrutor com os critérios selecionados.`);
-                    alert(`Não localizamos nenhum instrutor com os critérios selecionados.`);
                 }
             })
             .catch((error) => console.log(error));
@@ -178,7 +181,7 @@ function SearchForm() {
                     <div className='col-md-12'>
                         <div className={alertClass} role='alert'>
                             <p className="fs-5">
-                                <strong>{message}</strong>
+                                {message}
                             </p>
                         </div>
                     </div>

@@ -80,7 +80,7 @@ function SerchResult() {
             <p className="text-center"><h3>Conforme critérios da busca</h3></p>
             <hr />
 
-            <nav aria-label="Page navigation example">
+            {/* <nav aria-label="Page navigation example">
                 <ul className="pagination justify-content-center">
                     <li className="page-item">
                         <button className='btn btn-success shadow' name='previousPage' id='previousPage' onClick={handlePagination}>
@@ -94,7 +94,7 @@ function SerchResult() {
                         </button>
                     </li>
                 </ul>
-            </nav>
+            </nav> */}
 
             <table className="table table-striped">
                 <thead>

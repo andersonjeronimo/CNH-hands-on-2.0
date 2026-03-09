@@ -285,7 +285,7 @@ function RegisterForm() {
                     <div className='col-md-12'>
                         <div className={alertClass} role='alert'>
                             <p className="fs-5">
-                                <strong>{message}</strong>
+                                {message}
                             </p>
                         </div>
                     </div>
