@@ -16,8 +16,10 @@ function SerchResult() {
         setTableData(location.state.data);
         setQueryData(location.state.query);
 
-        paginationData.pageNumber = 1;
-        paginationData.pageSize = Number(import.meta.env.VITE_PAGE_SIZE);
+        paginationModel.pageNumber = 1;
+        paginationModel.pageSize = Number(import.meta.env.VITE_PAGE_SIZE);
+        setPaginationData(paginationModel);
+        
 
     }, []);
 

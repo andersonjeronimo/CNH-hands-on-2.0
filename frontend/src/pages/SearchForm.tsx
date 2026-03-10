@@ -27,7 +27,7 @@ function SearchForm() {
     const [citiesData, setCitiesData] = useState([cityModel]);//cidades por UF
     const [selectedCity, setSelectedCity] = useState(cityModel);
     const [microregionData, setMicroregionData] = useState([cityModel]);
-    const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);//cidades por microrregião
+    //const [submitBtnDisabled, setSubmitBtnDisabled] = useState(true);//cidades por microrregião
 
     useEffect(() => {
         setProvinceData(Estados);
@@ -110,11 +110,11 @@ function SearchForm() {
                 if (checked) {
                     setAlertClass(messageClass.warning);
                     setMessage(`Li e concordo com os termos e condições`);
-                    setSubmitBtnDisabled(false);
+                    //setSubmitBtnDisabled(false);
                 } else {
                     setAlertClass(messageClass.danger);
                     setMessage(`Para efetuar a busca, é necessário concordar com os termos e condições`);
-                    setSubmitBtnDisabled(true);
+                    //setSubmitBtnDisabled(true);
                 }
             }
             if (name === 'callByMicroregion') {
