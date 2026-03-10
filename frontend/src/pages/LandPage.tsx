@@ -1,11 +1,11 @@
 import Logo from "./partials/Logo";
-import Pricing from "./partials/Pricing";
+import Cards from "./partials/Cards";
 
 function LandPage() {
     return (
         <>
             <Logo></Logo>
-            <Pricing></Pricing>
+            <Cards></Cards>
         </>
     )
 }

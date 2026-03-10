@@ -1,6 +1,3 @@
-import User from "../../assets/images/user.svg";
-import Boss from "../../assets/images/boss.svg";
-
 function Pricing() {
     return (
 
